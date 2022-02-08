@@ -27,9 +27,9 @@ app.post('/adminChk', async(req,res)=>{
     // 여기서 비밀번호를 받아서 다시 클라이언트로 SESSION을 돌릴 수 있도록 돌려줘야 하는데,
     // 무얼 어떻게 보내서 어느 쪽에서 세션을 돌려야 할지 찾아봐야 하겠다.
 })
-app.get('/cases', async(req,res)=>{
+app.get('/events', async(req,res)=>{
     connection.query(
-        "SELECT * FROM cases",
+        "SELECT * FROM events",
         (err, rows, fields) => {
             res.send(rows);
         }
