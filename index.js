@@ -27,9 +27,21 @@ app.post('/adminChk', async(req,res)=>{
     // 여기서 비밀번호를 받아서 다시 클라이언트로 SESSION을 돌릴 수 있도록 돌려줘야 하는데,
     // 무얼 어떻게 보내서 어느 쪽에서 세션을 돌려야 할지 찾아봐야 하겠다.
 })
+
+// 타임라인 페이지 전체 데이터
 app.get('/events', async(req,res)=>{
     connection.query(
-        "SELECT * FROM events",
+        "SELECT * FROM events ORDER BY date",
+        (err, rows, fields) => {
+            res.send(rows);
+        }
+    )
+})
+
+// 플레이어스 페이지 전체 데이터
+app.get('/players', async(req,res)=>{
+    connection.query(
+        "SELECT * FROM players ORDER BY b_no",
         (err, rows, fields) => {
             res.send(rows);
         }
