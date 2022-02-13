@@ -48,6 +48,17 @@ app.get('/players', async(req,res)=>{
     )
 })
 
+// 플레이어스 페이지 디테일 접근
+app.get('/players/:id', async(req,res)=>{
+    const param = req.params;
+    connection.query(
+        `SELECT * FROM players where b_no = ${param.id}`,
+        (err, rows, fields) => {
+            res.send(rows);
+        }
+    )
+})
+
 app.listen(port, ()=>{
     console.log("아카이브 서버가 실행 중입니다.")
 })
