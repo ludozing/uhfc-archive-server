@@ -52,7 +52,17 @@ app.get('/players', async(req,res)=>{
 app.get('/players/:id', async(req,res)=>{
     const param = req.params;
     connection.query(
-        `SELECT * FROM players where b_no = ${param.id}`,
+        `SELECT * FROM players WHERE b_no = ${param.id}`,
+        (err, rows, fields) => {
+            res.send(rows);
+        }
+    )
+})
+// 플레이어스 페이지 디테일 이벤트 접근
+app.get('/events/:id', async(req, res)=>{
+    const param = req.params;
+    connection.query(
+        `SELECT * FROM events WHERE tags LIKE '% ${param.id},%' OR tags = 'ALL'`,
         (err, rows, fields) => {
             res.send(rows);
         }
