@@ -6,6 +6,7 @@ const fs = require('fs');
 const dataj = fs.readFileSync("./database.json");
 const parseData = JSON.parse(dataj);
 const mysql = require('mysql');
+const { connect } = require("http2");
 
 const connection = mysql.createConnection({
     host: parseData.host,
@@ -28,7 +29,7 @@ app.post('/adminChk', async(req,res)=>{
     // 무얼 어떻게 보내서 어느 쪽에서 세션을 돌려야 할지 찾아봐야 하겠다.
 })
 
-// 타임라인 페이지 전체 데이터
+// Timeline 페이지 전체 데이터
 app.get('/events', async(req,res)=>{
     connection.query(
         "SELECT * FROM events ORDER BY date",
@@ -38,7 +39,7 @@ app.get('/events', async(req,res)=>{
     )
 })
 
-// 플레이어스 페이지 전체 데이터
+// Players 페이지 전체 데이터
 app.get('/players', async(req,res)=>{
     connection.query(
         "SELECT * FROM players ORDER BY b_no",
@@ -48,7 +49,7 @@ app.get('/players', async(req,res)=>{
     )
 })
 
-// 플레이어스 페이지 디테일 접근
+// Players 페이지 디테일 접근
 app.get('/players/:id', async(req,res)=>{
     const param = req.params;
     connection.query(
@@ -58,11 +59,32 @@ app.get('/players/:id', async(req,res)=>{
         }
     )
 })
-// 플레이어스 페이지 디테일 이벤트 접근
+// Players 페이지 디테일 이벤트 접근
 app.get('/events/:id', async(req, res)=>{
     const param = req.params;
     connection.query(
         `SELECT * FROM events WHERE tags LIKE '% ${param.id},%' OR tags = 'ALL'`,
+        (err, rows, fields) => {
+            res.send(rows);
+        }
+    )
+})
+
+// Matches 페이지 경기 결과 접근
+app.get('/matches/kl1', async(req, res)=>{
+    connection.query(
+        `SELECT * FROM matchResult_KL1 ORDER BY round`,
+        (err, rows, fields) => {
+            res.send(rows);
+        }
+    )
+})
+
+// Matches 페이지 라인업 접근
+app.get('/matchlineup/kl1/:id', async(req, res)=>{
+    const param = req.params;
+    connection.query(
+        `SELECT * FROM matchLineup_KL1 WHERE matchResult_KL1_round = ${param.id}`,
         (err, rows, fields) => {
             res.send(rows);
         }
