@@ -80,6 +80,17 @@ app.get('/matches/kl1', async(req, res)=>{
     )
 })
 
+// Matches 페이지 경기 세부 결과 접근
+app.get('/matches/kl1/:id', async(req, res)=>{
+    const param = req.params;
+    connection.query(
+        `SELECT a.round, a.against, a.gf, a.ga, a.isAwaygame, b.dataId, b.ulsanScorer, b.ulsanScoredTime, b.ulsanAsist, b.againstScorer, b.againstScoredTime, b.againstAsist, b.isOG, b.refer_vid FROM matchResult_KL1 AS a LEFT OUTER JOIN matchSituation_KL1 AS b ON a.round = b.matchResult_KL1_round WHERE a.round = ${param.id} ORDER BY b.dataId`,
+        (err, rows, fields) => {
+            res.send(rows);
+        }
+    )
+})
+
 // Matches 페이지 라인업 접근
 app.get('/matchlineup/kl1/:id', async(req, res)=>{
     const param = req.params;
