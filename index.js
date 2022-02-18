@@ -84,7 +84,7 @@ app.get('/matches/kl1', async(req, res)=>{
 app.get('/matches/kl1/:id', async(req, res)=>{
     const param = req.params;
     connection.query(
-        `SELECT a.round, a.against, a.gf, a.ga, a.isAwaygame, b.dataId, b.ulsanScorer, b.ulsanScoredTime, b.ulsanAsist, b.againstScorer, b.againstScoredTime, b.againstAsist, b.isOG, b.refer_vid FROM matchResult_KL1 AS a LEFT OUTER JOIN matchSituation_KL1 AS b ON a.round = b.matchResult_KL1_round WHERE a.round = ${param.id} ORDER BY b.dataId`,
+        `SELECT a.round, a.against, a.gf, a.ga, a.isAwaygame, b.dataId, b.ulsanScorer, b.ulsanScoredTime, b.ulsanAssist, b.againstScorer, b.againstScoredTime, b.againstAssist, b.isPK, b.isOG, b.refer_vid FROM matchResult_KL1 AS a LEFT OUTER JOIN matchSituation_KL1 AS b ON a.round = b.matchResult_KL1_round WHERE a.round = ${param.id} ORDER BY b.dataId`,
         (err, rows, fields) => {
             res.send(rows);
         }
@@ -96,6 +96,32 @@ app.get('/matchlineup/kl1/:id', async(req, res)=>{
     const param = req.params;
     connection.query(
         `SELECT * FROM matchLineup_KL1 WHERE matchResult_KL1_round = ${param.id}`,
+        (err, rows, fields) => {
+            res.send(rows);
+        }
+    )
+})
+
+// Matches 페이지 리그 테이블 접근
+app.get('/leaguetable/kl1/:id', async(req, res)=>{
+    const param = req.params;
+    connection.query(
+        `SELECT
+            a.dataId,
+            a.matchResult_KL1_round,
+            a.team,
+            a.win,
+            a.draw,
+            a.lose,
+            a.points,
+            a.g,
+            a.a,
+            a.gd,
+            b.logo_url,
+            b.color
+        FROM leagueTable_KL1 AS a LEFT OUTER JOIN teamlist_KL1 AS b 
+        ON a.team = b.team
+        WHERE matchResult_KL1_round = ${param.id} ORDER BY points DESC, g DESC, gd DESC`,
         (err, rows, fields) => {
             res.send(rows);
         }
