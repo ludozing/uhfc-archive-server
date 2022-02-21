@@ -6,7 +6,7 @@ const fs = require('fs');
 const dataj = fs.readFileSync("./database.json");
 const parseData = JSON.parse(dataj);
 const mysql = require('mysql');
-const { connect } = require("http2");
+const pwAnswer = '1983';
 
 const connection = mysql.createConnection({
     host: parseData.host,
@@ -19,14 +19,9 @@ const connection = mysql.createConnection({
 app.use(express.json());
 app.use(cors());
 
-app.post('/adminChk', async(req,res)=>{
-    console.log(req.body)
-    // const pw = req.body.pw;
-    // res.send({
-        
-    // })
-    // 여기서 비밀번호를 받아서 다시 클라이언트로 SESSION을 돌릴 수 있도록 돌려줘야 하는데,
-    // 무얼 어떻게 보내서 어느 쪽에서 세션을 돌려야 할지 찾아봐야 하겠다.
+app.post('/adminChk', (req,res)=>{
+    console.log(req.query)
+    res.send(pwAnswer);
 })
 
 // Timeline 페이지 전체 데이터
@@ -37,6 +32,14 @@ app.get('/events', async(req,res)=>{
             res.send(rows);
         }
     )
+})
+
+// Timeline 업데이트 데이터 테이블에 삽입
+app.post('/addEvent', async(req,res)=>{
+    const { e_dept, e_date, e_title, e_refer_url, e_tags } = req.body
+    connection.query('insert into events(dept, title, date, refer_url, tags) values(?,?,?,?,?);', [e_dept, e_title, e_date, e_refer_url, e_tags],
+    function(err, result, fields){console.log(result);})
+    res.send('등록되었습니다.')
 })
 
 // Players 페이지 전체 데이터
@@ -84,7 +87,30 @@ app.get('/matches/kl1', async(req, res)=>{
 app.get('/matches/kl1/:id', async(req, res)=>{
     const param = req.params;
     connection.query(
-        `SELECT a.round, a.against, a.gf, a.ga, a.isAwaygame, b.dataId, b.ulsanScorer, b.ulsanScoredTime, b.ulsanAssist, b.againstScorer, b.againstScoredTime, b.againstAssist, b.isPK, b.isOG, b.refer_vid FROM matchResult_KL1 AS a LEFT OUTER JOIN matchSituation_KL1 AS b ON a.round = b.matchResult_KL1_round WHERE a.round = ${param.id} ORDER BY b.dataId`,
+        `SELECT
+            a.round, 
+            a.against, 
+            a.gf, 
+            a.ga, 
+            a.isAwaygame, 
+            a.vid_url, 
+            b.dataId, 
+            b.recordedTime, 
+            b.ulsanScorer, 
+            b.ulsanAssist, 
+            b.againstScorer, 
+            b.againstAssist, 
+            b.isPK, 
+            b.isOG, 
+            b.ulsanYellowcard, b.ulsanRedcard, 
+            b.againstYellowcard, b.againstRedcard, 
+            b.isSecondYellow, 
+            b.refer_vid, 
+            b.ulsanSubIn, b.ulsanSubOut, 
+            b.againstSubIn, b.againstSubOut
+        FROM matchResult_KL1 AS a LEFT OUTER JOIN matchSituation_KL1 AS b 
+        ON a.round = b.matchResult_KL1_round 
+        WHERE a.round = ${param.id} ORDER BY b.dataId`,
         (err, rows, fields) => {
             res.send(rows);
         }
