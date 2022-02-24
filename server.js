@@ -19,6 +19,7 @@ const connection = mysql.createConnection({
 app.use(express.json());
 app.use(cors());
 
+// admin 확인
 app.post('/adminChk', (req,res)=>{
     console.log(req.query)
     res.send(pwAnswer);
@@ -154,6 +155,46 @@ app.get('/leaguetable/kl1/:id', async(req, res)=>{
     )
 })
 
+// Matches페이지 포메이션 업데이트
+app.post('/matchlineup/kl1/:id/update',async(req,res)=>{
+    const param = req.params;
+    
+    const { GK_sta, GK_sta_isCap, GK_sub_time, GK_sub,
+        LB_sta, LB_sta_isCap, LB_sub_time, LB_sub,
+        LCD_sta, LCD_sta_isCap, LCD_sub_time, LCD_sub,
+        CD_sta, CD_sta_isCap, CD_sub_time, CD_sub,
+        RCD_sta, RCD_sta_isCap, RCD_sub_time, RCD_sub,
+        RB_sta, RB_sta_isCap, RB_sub_time, RB_sub,
+        LWB_sta, LWB_sta_isCap, LWB_sub_time, LWB_sub,
+        LDM_sta, LDM_sta_isCap, LDM_sub_time, LDM_sub,
+        CDM_sta, CDM_sta_isCap, CDM_sub_time, CDM_sub,
+        RDM_sta, RDM_sta_isCap, RDM_sub_time, RDM_sub,
+        RWB_sta, RWB_sta_isCap, RWB_sub_time, RWB_sub,
+        LM_sta, LM_sta_isCap, LM_sub_time, LM_sub,
+        LCM_sta, LCM_sta_isCap, LCM_sub_time, LCM_sub,
+        CM_sta, CM_sta_isCap, CM_sub_time, CM_sub,
+        RCM_sta, RCM_sta_isCap, RCM_sub_time, RCM_sub,
+        RM_sta, RM_sta_isCap, RM_sub_time, RM_sub,
+        LW_sta, LW_sta_isCap, LW_sub_time, LW_sub,
+        LAM_sta, LAM_sta_isCap, LAM_sub_time, LAM_sub,
+        CAM_sta, CAM_sta_isCap, CAM_sub_time, CAM_sub,
+        RAM_sta, RAM_sta_isCap, RAM_sub_time, RAM_sub,
+        RW_sta, RW_sta_isCap, RW_sub_time, RW_sub,
+        LF_sta, LF_sta_isCap, LF_sub_time, LF_sub,
+        CF_sta, CF_sta_isCap, CF_sub_time, CF_sub,
+        RF_sta, RF_sta_isCap, RF_sub_time, RF_sub } = req.body       
+        // connection.query('insert into events(dept, title, date, refer_url, tags) values(?,?,?,?,?);', [e_dept, e_title, e_date, e_refer_url, e_tags],
+        
+    connection.query(
+        'INSERT INTO matchLineup_KL1(matchResult_KL1_round, GK_sta, GK_sta_isCap, GK_sub, GK_sub_time, LB_sta, LB_sta_isCap, LB_sub, LB_sub_time, LCD_sta, LCD_sta_isCap, LCD_sub, LCD_sub_time, CD_sta, CD_sta_isCap, CD_sub, CD_sub_time, RCD_sta, RCD_sta_isCap, RCD_sub, RCD_sub_time, RB_sta, RB_sta_isCap, RB_sub, RB_sub_time, LWB_sta, LWB_sta_isCap, LWB_sub, LWB_sub_time, LDM_sta, LDM_sta_isCap, LDM_sub, LDM_sub_time, CDM_sta, CDM_sta_isCap, CDM_sub, CDM_sub_time, RDM_sta, RDM_sta_isCap, RDM_sub, RDM_sub_time, RWB_sta, RWB_sta_isCap, RWB_sub, RWB_sub_time, LM_sta, LM_sta_isCap, LM_sub, LM_sub_time, LCM_sta, LCM_sta_isCap, LCM_sub, LCM_sub_time, CM_sta, CM_sta_isCap, CM_sub, CM_sub_time, RCM_sta, RCM_sta_isCap, RCM_sub, RCM_sub_time, RM_sta, RM_sta_isCap, RM_sub, RM_sub_time, LW_sta, LW_sta_isCap, LW_sub, LW_sub_time, LAM_sta, LAM_sta_isCap, LAM_sub, LAM_sub_time, CAM_sta, CAM_sta_isCap, CAM_sub, CAM_sub_time, RAM_sta, RAM_sta_isCap, RAM_sub, RAM_sub_time, RW_sta, RW_sta_isCap, RW_sub, RW_sub_time, LF_sta, LF_sta_isCap, LF_sub, LF_sub_time, CF_sta, CF_sta_isCap, CF_sub, CF_sub_time, RF_sta, RF_sta_isCap, RF_sub, RF_sub_time) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);',
+        [param.id, GK_sta, GK_sta_isCap, GK_sub, GK_sub_time, LB_sta, LB_sta_isCap, LB_sub, LB_sub_time, LCD_sta, LCD_sta_isCap, LCD_sub, LCD_sub_time, CD_sta, CD_sta_isCap, CD_sub, CD_sub_time, RCD_sta, RCD_sta_isCap, RCD_sub, RCD_sub_time, RB_sta, RB_sta_isCap, RB_sub, RB_sub_time, LWB_sta, LWB_sta_isCap, LWB_sub, LWB_sub_time, LDM_sta, LDM_sta_isCap, LDM_sub, LDM_sub_time, CDM_sta, CDM_sta_isCap, CDM_sub, CDM_sub_time, RDM_sta, RDM_sta_isCap, RDM_sub, RDM_sub_time, RWB_sta, RWB_sta_isCap, RWB_sub, RWB_sub_time, LM_sta, LM_sta_isCap, LM_sub, LM_sub_time, LCM_sta, LCM_sta_isCap, LCM_sub, LCM_sub_time, CM_sta, CM_sta_isCap, CM_sub, CM_sub_time, RCM_sta, RCM_sta_isCap, RCM_sub, RCM_sub_time, RM_sta, RM_sta_isCap, RM_sub, RM_sub_time, LW_sta, LW_sta_isCap, LW_sub, LW_sub_time, LAM_sta, LAM_sta_isCap, LAM_sub, LAM_sub_time, CAM_sta, CAM_sta_isCap, CAM_sub, CAM_sub_time, RAM_sta, RAM_sta_isCap, RAM_sub, RAM_sub_time, RW_sta, RW_sta_isCap, RW_sub, RW_sub_time, LF_sta, LF_sta_isCap, LF_sub, LF_sub_time, CF_sta, CF_sta_isCap, CF_sub, CF_sub_time, RF_sta, RF_sta_isCap, RF_sub, RF_sub_time],
+        (err, result, fields) => {
+            console.log(result);
+        })
+        res.send('업로드 완료')
+})
+
+// 세팅한 app을 실행
 app.listen(port, ()=>{
     console.log("아카이브 서버가 실행 중입니다.")
 })
