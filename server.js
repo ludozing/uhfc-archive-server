@@ -96,12 +96,15 @@ app.get('/matches/kl1/:id', async(req, res)=>{
             a.isAwaygame, 
             a.vid_url, 
             b.dataId, 
+            b.HTline,
             b.isUlsan, 
             b.recordedTime, 
             b.scorer, 
             b.assist, 
             b.isPK, 
+            b.missedPK,
             b.isOG, 
+            b.isCanceled,
             b.yellowcard, b.redcard, 
             b.isSecond, 
             b.subIn, b.subOut,
@@ -112,7 +115,7 @@ app.get('/matches/kl1/:id', async(req, res)=>{
         FROM matchResult_KL1 AS a 
         LEFT OUTER JOIN matchSituation_KL1 AS b ON a.round = b.round 
         INNER JOIN teamlist_KL1 AS c ON a.against = c.team
-        WHERE a.round = ${param.id} ORDER BY b.recordedTime*1 ASC`,
+        WHERE a.round = ${param.id} ORDER BY b.recordedTime*1 ASC, b.dataId ASC`,
         (err, rows, fields) => {
             res.send(rows);
         }
