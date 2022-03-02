@@ -197,6 +197,25 @@ app.post('/matchlineup/kl1/:id/update',async(req,res)=>{
         res.send('업로드 완료')
 })
 
+// Matches페이지 경기 상황 업데이트
+app.post('/situation/kl1/:id/update',async(req,res)=>{
+    const param = req.params;
+    const {r_gf, r_ga, r_vid_url} = req.body[0]
+    connection.query(
+        `
+            UPDATE matchResult_KL1
+            SET isPlayed = 1, gf = ${r_gf}, ga = ${r_ga}, vid_url = '${r_vid_url}'
+            WHERE round = ${param.id}
+        `,
+        (err, result, feilds) => {
+            console.log(result);
+        }
+    )
+    req.body[1].forEach(element=>{
+        `INSERT INTO matchSituation_KL1(round, HTline, isUlsan, recordedTime, scorer, assist, isPK, missedPK, isOG, isCanceled, yellowcard, isSecond, redcard, subIn, subOut, refer_vid) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,[],
+    })
+})
+
 // Matches페이지 리그 테이블 업데이트
 app.post('/leaguetable/kl1/:id/update',async(req,res)=>{
     const param = req.params;
