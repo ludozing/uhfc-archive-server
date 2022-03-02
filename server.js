@@ -201,29 +201,22 @@ app.post('/matchlineup/kl1/:id/update',async(req,res)=>{
 app.post('/leaguetable/kl1/:id/update',async(req,res)=>{
     const param = req.params;
     req.body.forEach(element => {
-        const { team, win, draw, lose, points, g, a, gd } = element
+        let { team, win, draw, lose, points, g, a, gd } = element
         connection.query(
             // UPDATE 테이블
             // SET 컬럼='값', 컬럼='값'
             // WHERE 조건
             `
                 UPDATE leagueTable_KL1
-                SET
-                    win = '${win}',
-                    draw = '${draw}',
-                    lose = '${lose}',
-                    points = '${points}',
-                    g = '${g}',
-                    a = '${a}',
-                    gd = '${gd}',
-                WHERE matchResult_KL1_round = ${param.id} AND team = ${team}
+                SET win = ${win}, draw = ${draw}, lose = ${lose}, points = ${points}, g = ${g}, a = ${a}, gd = ${gd}
+                WHERE matchResult_KL1_round = ${param.id} AND team = '${team}'
             `,
             (err, result, feilds) => {
                 console.log(result);
             }
         )
-        res.send('업데이트 완료')
     });
+    res.send('업데이트 완료')
 })
 
 // 세팅한 app을 실행
