@@ -211,9 +211,16 @@ app.post('/situation/kl1/:id/update',async(req,res)=>{
             console.log(result);
         }
     )
-    req.body[1].forEach(element=>{
-        `INSERT INTO matchSituation_KL1(round, HTline, isUlsan, recordedTime, scorer, assist, isPK, missedPK, isOG, isCanceled, yellowcard, isSecond, redcard, subIn, subOut, refer_vid) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,[],
-    })
+    // req.body[1].forEach(element=>{
+    //     const {  } = element
+    //     connection.query(
+    //         `INSERT INTO matchSituation_KL1(round, HTline, isUlsan, recordedTime, scorer, assist, isPK, missedPK, isOG, isCanceled, yellowcard, isSecond, redcard, subIn, subOut, refer_vid) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,[param.id, ],
+    //         (err, result, fields)=>{
+    //             console.log(result);
+    //         }
+    //     )
+    // })
+    res.send('업데이트 완료')
 })
 
 // Matches페이지 리그 테이블 업데이트
