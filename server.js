@@ -67,7 +67,7 @@ app.get('/players/:id', async(req,res)=>{
 app.get('/events/:id', async(req, res)=>{
     const param = req.params;
     connection.query(
-        `SELECT * FROM events WHERE tags LIKE '% ${param.id},%' OR tags = 'ALL'`,
+        `SELECT * FROM events WHERE tags LIKE '% ${param.id},%' OR tags = 'ALL' ORDER BY date`,
         (err, rows, fields) => {
             res.send(rows);
         }
