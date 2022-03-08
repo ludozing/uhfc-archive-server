@@ -98,6 +98,7 @@ app.get('/matches/kl1/:id', async(req, res)=>{
             b.dataId, 
             b.HTline,
             b.isUlsan, 
+            b.is2ndHalf, 
             b.recordedTime, 
             b.scorer, 
             b.assist, 
@@ -115,7 +116,8 @@ app.get('/matches/kl1/:id', async(req, res)=>{
         FROM matchResult_KL1 AS a 
         LEFT OUTER JOIN matchSituation_KL1 AS b ON a.round = b.round 
         INNER JOIN teamlist_KL1 AS c ON a.against = c.team
-        WHERE a.round = ${param.id} ORDER BY b.recordedTime*1 ASC, b.dataId ASC`,
+        WHERE a.round = ${param.id} 
+        ORDER BY b.is2ndHalf ASC, b.recordedTime*1 ASC, b.dataId ASC`,
         (err, rows, fields) => {
             res.send(rows);
         }
@@ -212,9 +214,9 @@ app.post('/situation/kl1/:id/update',async(req,res)=>{
         }
     )
     req.body[1].forEach(element=>{
-        const { HTline, isUlsan, recordedTime, scorer, assist, isPK, missedPK, isOG, isCanceled, yellowcard, isSecond, redcard, subIn, subOut, refer_vid } = element
+        const { HTline, isUlsan, is2ndHalf, recordedTime, scorer, assist, isPK, missedPK, isOG, isCanceled, yellowcard, isSecond, redcard, subIn, subOut, refer_vid } = element
         connection.query(
-            `INSERT INTO matchSituation_KL1(round, HTline, isUlsan, recordedTime, scorer, assist, isPK, missedPK, isOG, isCanceled, yellowcard, isSecond, redcard, subIn, subOut, refer_vid) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,[param.id, HTline, isUlsan, recordedTime, scorer, assist, isPK, missedPK, isOG, isCanceled, yellowcard, isSecond, redcard, subIn, subOut, refer_vid],
+            `INSERT INTO matchSituation_KL1(round, HTline, isUlsan, is2ndHalf, recordedTime, scorer, assist, isPK, missedPK, isOG, isCanceled, yellowcard, isSecond, redcard, subIn, subOut, refer_vid) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,[param.id, HTline, isUlsan, is2ndHalf, recordedTime, scorer, assist, isPK, missedPK, isOG, isCanceled, yellowcard, isSecond, redcard, subIn, subOut, refer_vid],
             (err, result, fields)=>{
                 console.log(result);
             }
